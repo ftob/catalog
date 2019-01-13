@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -13,6 +11,16 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('api')->get('/', function (Request $request) {
-    return response()->json([]);
+/** @var Dingo\Api\Routing\Router $api */
+$api = app('Dingo\Api\Routing\Router');
+
+$api->version('v1', function (Dingo\Api\Routing\Router $api) {
+
+    $api->get('/categories', 'App\Http\Controllers\CategoryController@index');
+    $api->get('/goods', 'App\Http\Controllers\GoodsController@index');
+
+    $api->group(['middleware' => 'auth:api', 'bindings'], function (Dingo\Api\Routing\Router $api) {
+        $api->resource('categories', \App\Http\Controllers\CategoryController::class, ['except' => ['index']]);
+        $api->resource('categories', \App\Http\Controllers\GoodsController::class, ['except' => ['index']]);
+    });
 });
