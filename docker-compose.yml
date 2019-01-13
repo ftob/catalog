@@ -1,0 +1,48 @@
+version: '3'
+services:
+  app:
+    build: .docker/dev/app
+    tty: true
+    stdin_open: true
+    volumes:
+      - .:/usr/app
+    depends_on:
+      - db
+      - redis
+    expose:
+      - "9000"
+    ports:
+      - "9001:9001"
+    environment:
+      - DB_CONNECTION=pgsql
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_DATABASE=catalog
+      - DB_USERNAME=catalog
+      - DB_PASSWORD=catalog
+      - XDEBUG_CONFIG=remote_host=192.168.1.2
+      - PHP_IDE_CONFIG=serverName=localhost
+
+  db:
+    build: .docker/dev/postgres
+    tty: true
+    stdin_open: true
+    ports:
+      - 5432:5432
+  redis:
+    image: redis:latest
+    tty: true
+    stdin_open: true
+  front:
+    build:
+      context: .docker/dev/nginx
+    tty: true
+    stdin_open: true
+    volumes:
+      - .:/usr/app:ro
+
+    ports:
+      - 80:80
+      - 443:443
+    depends_on:
+      - app
