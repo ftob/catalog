@@ -15,12 +15,12 @@
 $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', function (Dingo\Api\Routing\Router $api) {
+    $api->resource('/categories', App\Http\Controllers\CategoriesController::class,['only' => ['index', 'show']]);
+    $api->resource('/items', App\Http\Controllers\ItemsController::class, ['only' => ['index', 'show']]);
 
-    $api->get('/categories', 'App\Http\Controllers\CategoryController@index');
-    $api->get('/goods', 'App\Http\Controllers\GoodsController@index');
 
     $api->group(['middleware' => 'auth:api', 'bindings'], function (Dingo\Api\Routing\Router $api) {
-        $api->resource('categories', \App\Http\Controllers\CategoryController::class, ['except' => ['index']]);
-        $api->resource('categories', \App\Http\Controllers\GoodsController::class, ['except' => ['index']]);
+        $api->resource('categories', \App\Http\Controllers\CategoriesController::class, ['except' => ['index', 'edit', 'show']]);
+        $api->resource('items', \App\Http\Controllers\ItemsController::class, ['except' => ['index', 'edit', 'show']]);
     });
 });
