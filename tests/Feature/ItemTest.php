@@ -1,35 +1,101 @@
 <?php
 namespace Tests\Feature;
 
-use Tests\PassportTestCase;
+use App\Models\Category;
+use App\Models\Item;
+use App\User;
+use Tests\DatabaseSetup;
+use Tests\OauthTrait;
+use Tests\TestCase;
 
-class ItemTest extends PassportTestCase
+/**
+ * Class ItemTest
+ * @package Tests\Feature
+ */
+class ItemTest extends TestCase
 {
+    use DatabaseSetup, OauthTrait;
 
-    const URL = '/api/categories';
+    const URL = '/api/items';
 
-    public function testIndex()
+    /** @var Category */
+    protected $category;
+
+    /** @var Item */
+    protected $item;
+
+    /** @var User */
+    protected $user;
+
+    protected $token;
+
+    protected $headers = [];
+
+    public function setUp()
     {
-        $this->get(self::URL)->assertSuccessful();
+        parent::setUp();
+        $this->token = $this->makeOauthTokenByPassword();
+        $this->headers['Accept'] = 'application/goods+json';
+        $this->headers['Authorization'] = "Bearer {$this->token->access_token}";
+
+        $this->category = factory(Category::class)->create();
+        $this->item = factory(Item::class)->create();
     }
 
-    public function testShow()
+    /**
+     * @test
+     */
+    public function get_items_is_successfully()
     {
-        $this->get(self::URL . '/' . $this->user->id)->assertSuccessful();
+        $response = $this->get(self::URL);
+        $response->assertSuccessful()->assertJsonStructure([
+            'data'
+        ]);
     }
 
-    public function testStore()
+    /**
+     * @test
+     */
+    public function show_item_is_successfully()
     {
-        $this->post(self::URL)->assertSuccessful();
+        $this->get(self::URL . '/' . $this->item->id)->assertSuccessful()
+            ->assertJsonStructure(['data']);
     }
 
-    public function testUpdate()
+    /**
+     * @test
+     */
+    public function create_item_is_successfully()
     {
-        $this->put(self::URL . '/' . $this->user->id)->assertSuccessful();
+        $this->post(self::URL,
+            ['name' => $this->app->make(\Faker\Generator::class)->name], $this->headers)->assertSuccessful()
+            ->assertJsonStructure([
+                'message',
+                'data'
+            ])->assertJson(['message' => 'Item created.']);
+
     }
 
-    public function testDestroy()
+    /**
+     * @test
+     */
+    public function update_item_is_successfully()
     {
-        $this->delete(self::URL . '/' . $this->user->id)->assertSuccessful();
+        $response =
+            $this->put(self::URL . '/' . $this->item->id, ['name' => $this->app->make(\Faker\Generator::class)->name], $this->headers);
+        $response->assertSuccessful()->assertJsonStructure([
+            'message',
+            'data'
+        ])->assertJson(['message' => 'Item updated.']);
     }
+
+    /**
+     * @test
+     */
+    public function destroy_item_is_successfully()
+    {
+        $response = $this->delete(self::URL . '/' . $this->item->id, [], $this->headers)->assertSuccessful();
+        $response->assertJson( ["message" => "Item deleted.", "deleted" => true]);
+    }
+
 }

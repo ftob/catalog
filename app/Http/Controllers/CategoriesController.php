@@ -47,7 +47,7 @@ class CategoriesController extends Controller
      */
     public function index()
     {
-        $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
+        $this->repository->pushCriteria(app(\Prettus\Repository\Criteria\RequestCriteria::class));
         $categories = $this->repository->all();
 
 
@@ -63,7 +63,6 @@ class CategoriesController extends Controller
      * @param  CategoryCreateRequest $request
      *
      * @return \Illuminate\Http\Response
-     * @throws HttpRequestException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function store(CategoryCreateRequest $request)
@@ -97,7 +96,6 @@ class CategoriesController extends Controller
      * Display the specified resource.
      *
      * @param  int $id
-     * @throws HttpRequestException
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -120,7 +118,6 @@ class CategoriesController extends Controller
      * @param  string            $id
      *
      * @return Response
-     * @throws HttpRequestException
      * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function update(CategoryUpdateRequest $request, $id)
@@ -155,7 +152,6 @@ class CategoriesController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int $id
-     * @throws HttpRequestException
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
