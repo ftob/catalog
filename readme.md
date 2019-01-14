@@ -32,11 +32,11 @@
 2. Получение списка товаров в конкретной категории
     ```http://localhost/api/items?with=categories&search=categories.name:%D0%92%20%D0%BA%D0%BB%D0%B5%D1%82%D0%BA%D1%83```
     ```http://localhost/api/itemssearch=categories.id:12```
-3. Смотреть https://laravel.com/docs/5.7/passport и тесты
+3. Смотреть https://laravel.com/docs/5.7/passport и тесты ```php ./vendor/bin/phpunit tests/Feature/UserTest.php```
 
-4. ...Смотреть тесты
+4. ...Смотреть тесты ```php ./vendor/bin/phpunit tests/Feature/CategoryTest.php```
 
-5. ...Смотреть тесты
+5. ...Смотреть тесты ```php ./vendor/bin/phpunit tests/Feature/CategoryTest.php```
 
 
 
