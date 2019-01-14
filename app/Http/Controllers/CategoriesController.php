@@ -48,8 +48,8 @@ class CategoriesController extends Controller
     public function index()
     {
         $this->repository->pushCriteria(app(\Prettus\Repository\Criteria\RequestCriteria::class));
-        $categories = $this->repository->all();
 
+        $categories = $this->repository->all();
 
         return response()->json([
             'data' => $categories,

@@ -14,12 +14,12 @@
         "php": "^7.1.3",
         "dingo/api": "2.0.0-alpha1",
         "fideloper/proxy": "^4.0",
+        "ftob/l5-repository": "^2.6",
         "kalnoy/nestedset": "^4.3",
         "laravel/framework": "5.7.*",
         "laravel/passport": "^7.0",
         "laravel/tinker": "^1.0",
-        "predis/predis": "^1.1",
-        "prettus/l5-repository": "^2.6"
+        "predis/predis": "^1.1"
     },
     "require-dev": {
         "beyondcode/laravel-dump-server": "^1.0",

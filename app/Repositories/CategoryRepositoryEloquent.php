@@ -15,6 +15,11 @@ use App\Validators\CategoryValidator;
  */
 class CategoryRepositoryEloquent extends BaseRepository implements CategoryRepository
 {
+    protected $fieldSearchable = [
+        'name',
+        'items.name'
+    ];
+
     /**
      * Specify Model class name
      *
@@ -44,5 +49,14 @@ class CategoryRepositoryEloquent extends BaseRepository implements CategoryRepos
     {
         $this->pushCriteria(app(RequestCriteria::class));
     }
-    
+
+    /**
+     * @return mixed
+     */
+    public function tree()
+    {
+        return $this->model()->get()->toTree();
+    }
+
+
 }
