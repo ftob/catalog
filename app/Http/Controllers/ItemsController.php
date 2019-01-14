@@ -47,19 +47,15 @@ class ItemsController extends Controller
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
-     * @throws HttpRequestException
      */
     public function index()
     {
         $this->repository->pushCriteria(app('Prettus\Repository\Criteria\RequestCriteria'));
         $items = $this->repository->all();
 
-        if (request()->wantsJson()) {
-            return response()->json([
-                'data' => $items,
-            ]);
-        }
-        throw new HttpRequestException();
+        return response()->json([
+            'data' => $items,
+        ]);
     }
 
     /**
@@ -84,17 +80,14 @@ class ItemsController extends Controller
                 'data'    => $item->toArray(),
             ];
 
-            if ($request->wantsJson()) {
 
-                return response()->json($response);
-            }
+
+            return response()->json($response);
         } catch (ValidatorException $e) {
-            if ($request->wantsJson()) {
-                return response()->json([
-                    'error'   => true,
-                    'message' => $e->getMessageBag()
-                ]);
-            }
+            return response()->json([
+                'error'   => true,
+                'message' => $e->getMessageBag()
+            ]);
         }
     }
 
@@ -102,21 +95,17 @@ class ItemsController extends Controller
      * Display the specified resource.
      *
      * @param  int $id
-     * @throws HttpRequestException
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
         $item = $this->repository->find($id);
 
-        if (request()->wantsJson()) {
 
-            return response()->json([
-                'data' => $item,
-            ]);
-        }
+        return response()->json([
+            'data' => $item,
+        ]);
 
-        throw new HttpRequestException();
     }
 
     /**
@@ -128,7 +117,6 @@ class ItemsController extends Controller
      * @return Response
      *
      * @throws \Prettus\Validator\Exceptions\ValidatorException
-     * @throws HttpRequestException
      */
     public function update(ItemUpdateRequest $request, $id)
     {
@@ -143,23 +131,17 @@ class ItemsController extends Controller
                 'data'    => $item->toArray(),
             ];
 
-            if ($request->wantsJson()) {
 
-                return response()->json($response);
-            }
+            return response()->json($response);
 
-            throw new HttpRequestException();
         } catch (ValidatorException $e) {
 
-            if ($request->wantsJson()) {
 
-                return response()->json([
-                    'error'   => true,
-                    'message' => $e->getMessageBag()
-                ]);
-            }
+            return response()->json([
+                'error'   => true,
+                'message' => $e->getMessageBag()
+            ]);
 
-            throw new HttpRequestException();
         }
     }
 
@@ -168,21 +150,17 @@ class ItemsController extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int $id
-     * @throws HttpRequestException
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
         $deleted = $this->repository->delete($id);
 
-        if (request()->wantsJson()) {
 
-            return response()->json([
-                'message' => 'Item deleted.',
-                'deleted' => $deleted,
-            ]);
-        }
+        return response()->json([
+            'message' => 'Item deleted.',
+            'deleted' => $deleted,
+        ]);
 
-        throw new HttpRequestException();
     }
 }
