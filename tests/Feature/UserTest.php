@@ -1,16 +1,32 @@
 <?php
-namespace Tests;
+namespace Tests\Feature;
 
 
 use App\User;
 use Faker\Generator;
 use Laravel\Passport\Client;
+use Tests\DatabaseSetup;
+use Tests\OauthTrait;
+use Tests\TestCase;
 
-trait OauthTrait
+class UserTest extends TestCase
 {
+    use DatabaseSetup, OauthTrait;
 
+    protected $token;
 
-    public function makeOauthTokenByPassword()
+    protected $headers = [];
+
+    public function setUp()
+    {
+        parent::setUp();
+
+    }
+
+    /**
+     * @test
+     */
+    public function check_user_auth()
     {
         $user = User::create([
             "name" => $this->app->make(Generator::class)->name,
@@ -29,6 +45,11 @@ trait OauthTrait
         ];
 
         $tokenResponse = $this->json('post', '/oauth/token', $payload);
-        return json_decode($tokenResponse->content());
+        $this->token =  json_decode($tokenResponse->content());
+        $this->headers['Accept'] = 'application/goods+json';
+        $this->headers['Authorization'] = "Bearer {$this->token->access_token}";
+
+
+        $this->get('/api/user', $this->headers)->assertSuccessful()->assertJsonStructure(['data' => ['id']]);
     }
 }
