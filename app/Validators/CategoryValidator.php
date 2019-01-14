@@ -19,7 +19,7 @@ class CategoryValidator extends LaravelValidator
      */
     protected $rules = [
         ValidatorInterface::RULE_CREATE => [
-		'name'	=>'	name=>required|min:2',
+		'name'	=>'	required|min:2',
 	],
         ValidatorInterface::RULE_UPDATE => [
 		'name' => 'required|min:2',

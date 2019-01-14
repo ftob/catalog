@@ -15,6 +15,13 @@ use App\Validators\ItemValidator;
  */
 class ItemRepositoryEloquent extends BaseRepository implements ItemRepository
 {
+    protected $fieldSearchable = [
+        'name',
+        'categories.name',
+        'categories.id'
+    ];
+
+
     /**
      * Specify Model class name
      *
