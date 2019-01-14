@@ -39,5 +39,8 @@
 5. ...Смотреть тесты ```php ./vendor/bin/phpunit tests/Feature/CategoryTest.php```
 
 
+**Товарищ не забывай про сидеры!**
+
+
 
 
